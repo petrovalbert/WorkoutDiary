@@ -6,6 +6,14 @@ class Constants {
         const val VERSION = 1
     }
 
+    object TablenameSets {
+        const val NAME = "sets"
+    }
+
+    object TablenameExercise {
+        const val NAME = "exercise"
+    }
+
     object Tablename {
         const val NAME = "workout_entries"
     }

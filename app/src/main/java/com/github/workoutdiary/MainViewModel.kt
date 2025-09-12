@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.github.workoutdiary.data.entities.WorkoutEntry
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -35,43 +36,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
             .sortedByDescending { it.date }
-    }
-
-    fun addTestWorkout() {
-        viewModelScope.launch {
-            val currentTime = System.currentTimeMillis()
-
-            // Создаем несколько упражнений для одной тренировки
-            val testExercises = listOf(
-                WorkoutEntry(
-                    date = currentTime,
-                    exerciseName = "Приседания",
-                    targetMuscle = "Ноги",
-                    setNumber = 1,
-                    weight = 70.0,
-                    reps = 10
-                ),
-                WorkoutEntry(
-                    date = currentTime,
-                    exerciseName = "Жим лежа",
-                    targetMuscle = "Грудь",
-                    setNumber = 1,
-                    weight = 60.0,
-                    reps = 8
-                ),
-                WorkoutEntry(
-                    date = currentTime,
-                    exerciseName = "Подтягивания",
-                    targetMuscle = "Спина",
-                    setNumber = 1,
-                    weight = 0.0,
-                    reps = 12
-                )
-            )
-
-            testExercises.forEach { workoutDao.insert(it) }
-            loadWorkouts() // Перезагружаем список
-        }
     }
 
     fun toggleWorkoutExpanded(date: Long) {

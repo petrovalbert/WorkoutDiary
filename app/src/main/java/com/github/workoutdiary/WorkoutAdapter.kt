@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.github.workoutdiary.data.entities.WorkoutEntry
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
