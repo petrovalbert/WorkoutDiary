@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">WorkoutDiary</string>
+    <string name="exercise_hint">Exercise: %s</string>
+    <string name="test_workout_added">Test workout added!</string>
+    <string name="add_test_workout">Add Test Workout</string>
+
+    <!-- Новые строки для AddExerciseActivity -->
+    <string name="exercise_name_hint">Exercise name</string>
+    <string name="muscle_group_hint">Muscle group</string>
+    <string name="set_header">Set</string>
+    <string name="weight_header">Weight</string>
+    <string name="reps_header">Reps</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="please_fill_exercise">Please fill exercise name</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="set">Set</string>
+    <string name="weight">Weight</string>
+    <string name="reps">Reps</string>
+</resources>
