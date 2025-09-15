@@ -7,15 +7,15 @@ class Constants {
     }
 
     object TablenameSets {
-        const val NAME = "sets"
+        const val NAME = "SetsTable"
     }
 
     object TablenameExercise {
-        const val NAME = "exercise"
+        const val NAME = "ExercisesTable"
     }
 
-    object Tablename {
-        const val NAME = "workout_entries"
+    object TablenameWorkout {
+        const val NAME = "WorkoutsTable"
     }
 
     object SetFields {
