@@ -20,17 +20,7 @@
             android:id="@+id/exercise_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/exercise_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="2dp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 

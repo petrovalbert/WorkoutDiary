@@ -25,17 +25,13 @@
                 android:id="@+id/workout_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"/>
+                android:textSize="16sp"/>
 
-            <TextView
-                android:id="@+id/workout_date"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exercisesRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

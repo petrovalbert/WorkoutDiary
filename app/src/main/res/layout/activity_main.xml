@@ -18,6 +18,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_menu_add"
-        android:contentDescription="Добавить тренировку"/>
+        android:contentDescription="@string/add_workout_button"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
