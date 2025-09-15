@@ -15,5 +15,8 @@ data class WorkoutEntry (
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val date: Long,
-    val name: String?
+    val name: String?,
+    val notes: String?
+    // Patch for next version.
+    // Need to add key muscle groups checkboxes
 )
