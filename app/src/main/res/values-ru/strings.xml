@@ -24,4 +24,7 @@
 
     <string name="please_fill_exercise">Пожалуйста, напишите название упражнения</string>
 
+    <string name="loading_error_message">Ошибка в ходе загрузки</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+
 </resources>

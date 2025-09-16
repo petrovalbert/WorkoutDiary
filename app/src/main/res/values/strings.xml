@@ -23,4 +23,7 @@
 
     <string name="please_fill_exercise">Please fill exercise name</string>
 
+    <string name="loading_error_message">Error due loading</string>
+    <string name="unknown_error">Unknown Error</string>
+
 </resources>
