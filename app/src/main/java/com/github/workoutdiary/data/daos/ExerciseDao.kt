@@ -5,9 +5,6 @@ import androidx.room.Insert
 import androidx.room.Delete
 import androidx.room.Update
 import androidx.room.Query
-import androidx.room.ForeignKey
-import androidx.room.Index
-import com.github.workoutdiary.data.entities.WorkoutEntry
 import com.github.workoutdiary.Constants
 import com.github.workoutdiary.data.entities.WorkoutExercise
 

@@ -5,12 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.github.workoutdiary.Constants
+import com.github.workoutdiary.data.daos.ExerciseDao
+import com.github.workoutdiary.data.daos.SetDao
 import com.github.workoutdiary.data.daos.WorkoutDao
 import com.github.workoutdiary.data.entities.WorkoutEntry
+import com.github.workoutdiary.data.entities.WorkoutExercise
+import com.github.workoutdiary.data.entities.WorkoutSet
 
-@Database(entities = [WorkoutEntry::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        WorkoutEntry::class,
+        WorkoutExercise::class,
+        WorkoutSet::class,
+    ],
+    version = 2, exportSchema = false,
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
+    abstract fun exerciseDao(): ExerciseDao
+    abstract fun setDao(): SetDao
 
     companion object {
         @Volatile
@@ -22,7 +35,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     Constants.Database.NAME
-                ).build()
+                )
+                    .fallbackToDestructiveMigration(true)
+                    .build()
 
                 INSTANCE = instance
                 instance
