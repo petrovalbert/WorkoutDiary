@@ -3,7 +3,7 @@
     <string name="app_name">Дневник Тренировок</string>
 
     <!-- Common using strings -->
-    <string name="date_label">Дата: %s</string>
+    <string name="date_label">Дата</string>
     <string name="name_label">Место для названия тренировки</string>
     <string name="notes_label">Место для заметок</string>
     <string name="save_button">Сохранить</string>

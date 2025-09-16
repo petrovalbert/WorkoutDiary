@@ -2,7 +2,7 @@
     <string name="app_name">Workout Diary</string>
 
     <!-- Common using strings -->
-    <string name="date_label">Date: %s</string>
+    <string name="date_label">Date</string>
     <string name="name_label">Place for workout name</string>
     <string name="notes_label">Place for notes</string>
     <string name="save_button">Save</string>
