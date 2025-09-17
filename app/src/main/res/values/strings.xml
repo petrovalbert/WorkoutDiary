@@ -26,4 +26,7 @@
     <string name="loading_error_message">Error due loading</string>
     <string name="unknown_error">Unknown Error</string>
 
+    <!-- Concent description -->
+    <string name="roll_out">Roll out</string>
+
 </resources>
