@@ -58,7 +58,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupViewModel() {
         val applicationScope = viewLifecycleOwner.lifecycleScope
-        val database = AppDatabase.getInstance(requireContext(), applicationScope)
+        val database = AppDatabase.getInstance(requireContext())
         val workoutDao = database.workoutDao()
         val exerciseDao = database.exerciseDao()
         val setDao = database.setDao()
