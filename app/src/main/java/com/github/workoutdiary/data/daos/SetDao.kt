@@ -12,7 +12,7 @@ import com.github.workoutdiary.data.entities.WorkoutSet
 interface SetDao {
     // Use *All for all type of CRUD request even if one set
     @Insert
-    suspend fun insertAll(sets: List<WorkoutSet>): Long
+    suspend fun insertAll(sets: List<WorkoutSet>): List<Long>
 
     @Update
     suspend fun updateAll(sets: List<WorkoutSet>): Int

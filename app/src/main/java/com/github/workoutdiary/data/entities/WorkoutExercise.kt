@@ -12,7 +12,7 @@ import com.github.workoutdiary.Constants
     tableName = Constants.TablenameExercise.NAME,
     indices = [
         Index(value = ["workout_id"]),
-        Index(value = ["name"]),
+        Index(value = ["exercise_name"]),
         Index(value = ["workout_id", "exercise_name"], unique = true),
         Index(value = ["muscle_group"])
     ],

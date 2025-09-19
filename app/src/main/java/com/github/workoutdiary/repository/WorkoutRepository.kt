@@ -75,7 +75,7 @@ class WorkoutRepository(
 
     // Sets operations
 
-    suspend fun insertSets(sets: List<WorkoutSet>): Long {
+    suspend fun insertSets(sets: List<WorkoutSet>): List<Long> {
         return setDao.insertAll(sets)
     }
 
