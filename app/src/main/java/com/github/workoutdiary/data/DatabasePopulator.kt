@@ -1,100 +1,103 @@
 package com.github.workoutdiary.data
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 import com.github.workoutdiary.data.entities.WorkoutEntry
 import com.github.workoutdiary.data.entities.WorkoutExercise
 import com.github.workoutdiary.data.entities.WorkoutSet
 
-class DatabasePopulator(
-    private val database: AppDatabase,
-    private val applicationScope: CoroutineScope
-) {
-    fun populateIfNeeded() {
-        applicationScope.launch {
-            val workoutCount = database.workoutDao().getWorkoutCount()
-            if (workoutCount == 0) {
-                populateDatabase()
+class DatabasePopulator() {
+    companion object {
+        suspend fun populateDatabase(database: AppDatabase) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val workoutDao = database.workoutDao()
+                    val exerciseDao = database.exerciseDao()
+                    val setDao = database.setDao()
+
+                    val testWorkout = WorkoutEntry(
+                        id = 0L,
+                        date = 1758186050,
+                        name = "workout1",
+                        notes = ""
+                    )
+                    val workoutId = workoutDao.insert(testWorkout)
+
+                    val exercises = listOf(
+                        WorkoutExercise(
+                            id = 0L,
+                            workoutId = workoutId,
+                            exerciseName = "Squats",
+                            muscleGroup = "Quads"
+                        ),
+                        WorkoutExercise(
+                            id = 0L,
+                            workoutId = workoutId,
+                            exerciseName = "Bench press",
+                            muscleGroup = "Chest"
+                        )
+                    )
+                    val exerciseIds = mutableListOf<Long>()
+                    exercises.forEach { exercise ->
+                        val exerciseId = exerciseDao.insert(exercise)
+                        exerciseIds.add(exerciseId)
+                    }
+
+                    val squatSets = listOf(
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[0], // Ссылаемся на ID упражнения "Squats"
+                            setNumber = 1,
+                            weight = 20.0,
+                            reps = 20
+                        ),
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[0],
+                            setNumber = 2,
+                            weight = 40.0,
+                            reps = 10
+                        ),
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[0],
+                            setNumber = 3,
+                            weight = 70.0,
+                            reps = 5
+                        )
+
+                    )
+                    setDao.insertAll(squatSets)
+
+                    val benchSets = listOf(
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[1], // Ссылаемся на ID упражнения "Bench press"
+                            setNumber = 1,
+                            weight = 20.0,
+                            reps = 20
+                        ),
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[1],
+                            setNumber = 2,
+                            weight = 40.0,
+                            reps = 10
+                        ),
+                        WorkoutSet(
+                            id = 0L,
+                            exerciseId = exerciseIds[1],
+                            setNumber = 3,
+                            weight = 70.0,
+                            reps = 5
+                        )
+                    )
+                    setDao.insertAll(benchSets)
+                } catch (e: Exception) {
+                    throw e
+                }
             }
         }
-    }
-
-    private suspend fun populateDatabase() {
-        val testWorkout = WorkoutEntry(
-            id = 0L,
-            date = 1758186050,
-            name = "workout1",
-            notes = ""
-        )
-        val insertedWorkoutId = database.workoutDao().insert(testWorkout)
-
-        val exerciseSquats = WorkoutExercise(
-            id = 0L,
-            workoutId = insertedWorkoutId,
-            exerciseName = "Squats",
-            muscleGroup = "Quads"
-        )
-        val insertedSquats = database.exerciseDao().insert(exerciseSquats)
-
-        val exercisesBenchPress = WorkoutExercise(
-            id = 0L,
-            workoutId = insertedWorkoutId,
-            exerciseName = "Bench press",
-            muscleGroup = "Chest"
-        )
-        val insertedBenchPress = database.exerciseDao().insert(exercisesBenchPress)
-
-        // 3. Создаем и вставляем подходы для упражнения "Squats"
-        val squatSets = listOf(
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedSquats, // Ссылаемся на ID упражнения "Squats"
-                setNumber = 1,
-                weight = 20.0,
-                reps = 20
-            ),
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedSquats,
-                setNumber = 2,
-                weight = 40.0,
-                reps = 10
-            ),
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedSquats,
-                setNumber = 3,
-                weight = 70.0,
-                reps = 5
-            )
-        )
-        database.setDao().insertAll(squatSets)
-
-        // 4. Создаем и вставляем подходы для упражнения "Bench press"
-        val benchSets = listOf(
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedBenchPress, // Ссылаемся на ID упражнения "Bench press"
-                setNumber = 1,
-                weight = 20.0,
-                reps = 20
-            ),
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedBenchPress,
-                setNumber = 2,
-                weight = 40.0,
-                reps = 10
-            ),
-            WorkoutSet(
-                id = 0L,
-                exerciseId = insertedBenchPress,
-                setNumber = 3,
-                weight = 70.0,
-                reps = 5
-            )
-        )
-        database.setDao().insertAll(benchSets)
     }
 }

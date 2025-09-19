@@ -45,9 +45,6 @@ abstract class AppDatabase : RoomDatabase() {
 
                 INSTANCE = instance
 
-                val populator = DatabasePopulator(instance, applicationScope)
-                populator.populateIfNeeded()
-
                 instance
             }
         }
