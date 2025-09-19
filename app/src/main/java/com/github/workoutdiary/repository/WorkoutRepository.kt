@@ -7,6 +7,7 @@ import com.github.workoutdiary.data.daos.SetDao
 import com.github.workoutdiary.data.entities.WorkoutEntry
 import com.github.workoutdiary.data.entities.WorkoutExercise
 import com.github.workoutdiary.data.entities.WorkoutSet
+import kotlinx.coroutines.flow.Flow
 
 class WorkoutRepository(
     private val workoutDao: WorkoutDao,
@@ -23,7 +24,7 @@ class WorkoutRepository(
         return workoutDao.delete(workout)
     }
 
-    suspend fun getAllWorkouts(): List<WorkoutEntry> {
+    suspend fun getAllWorkouts(): Flow<List<WorkoutEntry>> {
         return workoutDao.getAllEntries()
     }
 

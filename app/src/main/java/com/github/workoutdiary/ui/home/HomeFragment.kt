@@ -32,24 +32,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ИНИЦИАЛИЗИРУЕМ View Binding
         _binding = FragmentHomeBinding.bind(view)
 
         setupRecyclerView()
         setupViewModel()
         setupObservers()
-
-        homeViewModel.loadWorkouts()
     }
 
     private fun setupRecyclerView() {
         workoutAdapter = WorkoutAdapter()
-        // ИСПРАВЛЯЕМ: используем binding вместо синтетического свойства
+
         val recyclerView = binding.workoutRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = workoutAdapter
 
-        // Настройка FAB (если он есть в fragment_home.xml)
         binding.fab.setOnClickListener {
             // Обработка клика по FAB
             onFabClicked()
@@ -85,13 +81,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // ОЧЕНЬ ВАЖНО: обнуляем binding при уничтожении View
-        // чтобы избежать утечек памяти
         _binding = null
     }
 
     override fun onResume() {
         super.onResume()
-        homeViewModel.refreshWorkouts()
     }
 }

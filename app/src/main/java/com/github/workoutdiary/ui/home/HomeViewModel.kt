@@ -22,25 +22,15 @@ class HomeViewModel(private val repository: WorkoutRepository) : ViewModel() {
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
-    fun loadWorkouts() {
-        _isLoading.value = true
-        _error.value = null
 
+    init {
         viewModelScope.launch {
-            try {
-                val workoutsList = repository.getAllWorkouts()
-                _workouts.value = workoutsList
-            } catch (e: Exception) {
-                _error.value = "Error: ${e.message}"
-            } finally {
-                _isLoading.value = false
+            repository.getAllWorkouts().collect { workoutList ->
+                _workouts.value = workoutList
             }
         }
     }
 
-    fun refreshWorkouts() {
-        loadWorkouts()
-    }
 
     fun deleteWorkout(workoutId: Long) {
         viewModelScope.launch {
@@ -48,7 +38,6 @@ class HomeViewModel(private val repository: WorkoutRepository) : ViewModel() {
                 val workoutToDelete = repository.getWorkoutById(workoutId)
                 workoutToDelete?.let {
                     repository.deleteWorkout(it)
-                    loadWorkouts()
                 }
             } catch (e: Exception) {
                 _error.value = "Error during deleting: ${e.message}"

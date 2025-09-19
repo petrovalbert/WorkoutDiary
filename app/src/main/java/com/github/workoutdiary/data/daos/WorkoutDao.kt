@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Query
 import com.github.workoutdiary.data.entities.WorkoutEntry
 import com.github.workoutdiary.Constants
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WorkoutDao {
@@ -17,7 +18,7 @@ interface WorkoutDao {
 
     // Get all workouts
     @Query("SELECT * FROM ${Constants.TablenameWorkout.NAME} ORDER BY date DESC")
-    suspend fun getAllEntries(): List<WorkoutEntry>
+    fun getAllEntries(): Flow<List<WorkoutEntry>>
 
     // Get a workout by id number
     @Query("SELECT * FROM ${Constants.TablenameWorkout.NAME} WHERE id = :id")
