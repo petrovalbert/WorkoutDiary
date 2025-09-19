@@ -1,47 +1,51 @@
-package com.github.workoutdiary.ui.home
+package com.github.workoutdiary.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.TextView
+
 import androidx.recyclerview.widget.RecyclerView
-import com.github.workoutdiary.databinding.ItemWorkoutBinding
-import com.github.workoutdiary.models.WorkoutWithExercises
 
-class WorkoutAdapter(
-    private val onItemClick: (WorkoutWithExercises) -> Unit
-) : ListAdapter<WorkoutWithExercises, WorkoutAdapter.ViewHolder>(WorkoutDiffCallback()) {
+import com.github.workoutdiary.data.entities.WorkoutEntry
 
-    inner class ViewHolder(private val binding: ItemWorkoutBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+class WorkoutAdapter : RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder>() {
+    private var workouts = emptyList<WorkoutEntry>()
 
-        fun bind(workout: WorkoutWithExercises) {
-            binding.workoutTitle.text = workout.workout.name
-            // TODO: настроить RecyclerView для упражнений внутри
-            binding.root.setOnClickListener { onItemClick(workout) }
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): WorkoutViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(android.R.layout.simple_list_item_1, parent, false)
+        return WorkoutViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: WorkoutViewHolder, position: Int) {
+        val currentWorkout = workouts[position]
+        holder.bind(currentWorkout)
+    }
+
+    override fun getItemCount(): Int {
+        return workouts.size
+    }
+
+
+    fun setWorkouts(newWorkouts: List<WorkoutEntry>) {
+        this.workouts = newWorkouts
+
+        notifyDataSetChanged()
+    }
+
+
+    class WorkoutViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val workoutTextView: TextView = itemView.findViewById(android.R.id.text1)
+
+        fun bind(workout: WorkoutEntry) {
+            workoutTextView.text = workout.name
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemWorkoutBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
 }
 
-class WorkoutDiffCallback : DiffUtil.ItemCallback<WorkoutWithExercises>() {
-    override fun areItemsTheSame(oldItem: WorkoutWithExercises, newItem: WorkoutWithExercises): Boolean {
-        return oldItem.workout.id == newItem.workout.id
-    }
 
-    override fun areContentsTheSame(oldItem: WorkoutWithExercises, newItem: WorkoutWithExercises): Boolean {
-        return oldItem == newItem
-    }
-}
