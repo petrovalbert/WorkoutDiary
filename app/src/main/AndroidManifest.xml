@@ -4,7 +4,6 @@
     package="com.github.workoutdiary">
 
     <application
-        android:name=".WorkoutApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,14 +24,14 @@
             </intent-filter>
         </activity>
 
-        <!-- Activity для добавления упражнений -->
+        <!-- Activity для добавления упражнений
         <activity
             android:name=".AddExerciseActivity"
             android:theme="@style/Theme.WorkoutDiary.NoActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false">
         </activity>
-
+        -->
 
     </application>
 
