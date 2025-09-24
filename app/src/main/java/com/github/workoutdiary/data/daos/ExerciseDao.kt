@@ -27,7 +27,7 @@ interface ExerciseDao {
     // Get exercises by muscle_group
     @Query("SELECT * FROM ${Constants.TablenameExercise.NAME} " +
             "WHERE muscle_group = :muscleGroup ORDER BY id")
-    suspend fun getExercisesByWorkoutId(muscleGroup: String): List<WorkoutExercise>
+    suspend fun getExercisesByMuscleGroup(muscleGroup: String): List<WorkoutExercise>
 
     // Check existing of exercise with the same name and workoutId
     @Query("SELECT COUNT(*) FROM ${Constants.TablenameExercise.NAME}" +

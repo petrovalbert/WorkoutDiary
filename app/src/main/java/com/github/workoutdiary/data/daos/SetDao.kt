@@ -23,7 +23,7 @@ interface SetDao {
     // Get all sets by exercise id
     @Query("SELECT * FROM ${Constants.TablenameSets.NAME} " +
             "WHERE exercise_id = :exerciseId ORDER BY id")
-    suspend fun getExercisesByWorkoutId(exerciseId: Long): List<WorkoutSet>
+    suspend fun getSetsByExerciseId(exerciseId: Long): List<WorkoutSet>
 
     // Get one set by id
     @Query("SELECT * FROM ${Constants.TablenameSets.NAME} WHERE id = :setId")

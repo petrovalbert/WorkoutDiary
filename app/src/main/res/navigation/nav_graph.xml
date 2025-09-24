@@ -23,7 +23,7 @@
         android:id="@+id/createWorkoutFragment"
         android:name="com.github.workoutdiary.ui.create.workout.CreateWorkoutFragment"
         android:label="Create Workout"
-        tools:layout="@layout/fragment_create_workout">
+        tools:layout="@layout/fragment_add_workout">
 
         <!-- Действие для возврата назад -->
         <action

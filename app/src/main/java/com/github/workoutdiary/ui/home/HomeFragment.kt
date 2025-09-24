@@ -1,13 +1,13 @@
 package com.github.workoutdiary.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 // Импорты ваших классов
 import com.github.workoutdiary.adapters.WorkoutAdapter
@@ -18,6 +18,10 @@ import com.github.workoutdiary.repository.WorkoutRepository
 import com.github.workoutdiary.databinding.FragmentHomeBinding
 
 import com.github.workoutdiary.R
+import com.github.workoutdiary.data.entities.WorkoutEntry
+import com.github.workoutdiary.data.entities.WorkoutExercise
+import kotlinx.coroutines.flow.combine
+import kotlin.math.exp
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -40,15 +44,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupRecyclerView() {
-        workoutAdapter = WorkoutAdapter()
+        workoutAdapter = WorkoutAdapter { workoutId ->
+            onWorkoutClicked(workoutId)
+        }
 
         val recyclerView = binding.workoutRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = workoutAdapter
 
         binding.fab.setOnClickListener {
-            // Обработка клика по FAB
-            onFabClicked()
+            findNavController().navigate(R.id.action_homeFragment_to_createWorkoutFragment)
         }
     }
 
@@ -66,25 +71,90 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            homeViewModel.workouts.collect { workouts ->
-                workouts?.let {
-                    workoutAdapter.setWorkouts(it)
+            combine(
+                homeViewModel.workouts,
+                homeViewModel.expandedWorkouts,
+                homeViewModel.loadingStates
+            ) { workouts, expandedIds, loadingIds ->
+                Triple(workouts, expandedIds, loadingIds)
+            }.collect { (workouts, expandedIds, loadingIds) ->
+                workoutAdapter.updateData(workouts, expandedIds, loadingIds)
+                expandedIds.forEach { workoutId ->
+                    if (!isExercisesLoadedForWorkout(workoutId)) {
+                        loadExercisesForWorkout(workoutId)
+                    } else {
+                        // Если упражнения уже в кэше, просто обновляем отображение
+                        updateExercisesDisplay(workoutId)
+                    }
+                }
+
+                workouts.forEach { workout ->
+                    if (!expandedIds.contains(workout.id)) {
+                        setExercisesForWorkout(workout.id, emptyList())
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            homeViewModel.error.collect { error ->
+                error?.let {
+                    // Показ ошибки пользователю (можно реализовать Snackbar)
+                    Log.e("HomeFragment", "Ошибка: $it")
                 }
             }
         }
     }
 
-    private fun onFabClicked() {
-        // Навигация из фрагментафрагмента
-        findNavController().navigate(R.id.action_homeFragment_to_createWorkoutFragment)
+    private fun isExercisesLoadedForWorkout(workoutId: Long): Boolean {
+        return try {
+            homeViewModel.getExercisesForWorkout(workoutId).isNotEmpty()
+        } catch (e: Exception) {
+            false
+        }
     }
+
+    private fun updateExercisesDisplay(workoutId: Long) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val exercises = homeViewModel.getExercisesForWorkout(workoutId)
+                setExercisesForWorkout(workoutId, exercises)
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Ошибка обновления упражнений для тренировки $workoutId", e)
+            }
+        }
+    }
+
+    private fun loadExercisesForWorkout(workoutId: Long) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val exercises = homeViewModel.getExercisesForWorkout(workoutId)
+                setExercisesForWorkout(workoutId, exercises)
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Ошибка загрузки упражнений для тренировки $workoutId", e)
+            }
+        }
+    }
+
+    private fun setExercisesForWorkout(workoutId: Long, exercises: List<WorkoutExercise>) {
+        // Находим ViewHolder по ID тренировки
+        for (i in 0 until binding.workoutRecyclerView.childCount) {
+            val child = binding.workoutRecyclerView.getChildAt(i)
+            val holder = binding.workoutRecyclerView.getChildViewHolder(child)
+            if (holder is WorkoutAdapter.WorkoutViewHolder && child.tag == workoutId) {
+                holder.setExercises(exercises)
+                break
+            }
+        }
+    }
+
+    private fun onWorkoutClicked(workoutId: Long) {
+        homeViewModel.toggleWorkoutExpansion(workoutId)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 }

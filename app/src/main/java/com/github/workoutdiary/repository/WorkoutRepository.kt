@@ -14,6 +14,27 @@ class WorkoutRepository(
     private val exerciseDao: ExerciseDao,
     private val setDao: SetDao
 ) {
+    private val exercisesCache = mutableMapOf<Long, List<WorkoutExercise>>()
+
+    fun getAllWorkouts(): Flow<List<WorkoutEntry>> {
+        return workoutDao.getAllWorkouts()
+    }
+
+    suspend fun getExercisesForWorkout(workoutId: Long): List<WorkoutExercise> {
+        return exercisesCache[workoutId] ?: run {
+            val exercises = exerciseDao.getExercisesByWorkoutId(workoutId)
+            exercisesCache[workoutId] = exercises
+            exercises
+        }
+    }
+
+    fun clearCache() = exercisesCache.clear()
+
+    fun invalidateCache(workoutId: Long) {
+        exercisesCache.remove(workoutId)
+    }
+
+
     // Workout operations
 
     suspend fun insertWorkout(workout: WorkoutEntry): Long {
@@ -24,9 +45,7 @@ class WorkoutRepository(
         return workoutDao.delete(workout)
     }
 
-    suspend fun getAllWorkouts(): Flow<List<WorkoutEntry>> {
-        return workoutDao.getAllEntries()
-    }
+
 
     suspend fun getWorkoutById(id: Long): WorkoutEntry? {
         return workoutDao.getWorkoutByID(id)
@@ -54,12 +73,8 @@ class WorkoutRepository(
         return exerciseDao.delete(exercise)
     }
 
-    suspend fun getExercisesByWorkoutId(workoutId: Long): List<WorkoutExercise> {
-        return exerciseDao.getExercisesByWorkoutId(workoutId)
-    }
-
     suspend fun getExercisesByMuscleGroup(muscleGroup: String): List<WorkoutExercise> {
-        return exerciseDao.getExercisesByWorkoutId(muscleGroup)
+        return exerciseDao.getExercisesByMuscleGroup(muscleGroup)
     }
 
     suspend fun exerciseExists(workoutId: Long, exerciseName: String): Boolean {
@@ -89,7 +104,7 @@ class WorkoutRepository(
     }
 
     suspend fun getSetsByExerciseId(exerciseId: Long): List<WorkoutSet> {
-        return setDao.getExercisesByWorkoutId(exerciseId)
+        return setDao.getSetsByExerciseId(exerciseId)
     }
 
     suspend fun getSetById(setId: Long): WorkoutSet? {
