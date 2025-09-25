@@ -18,10 +18,8 @@ import com.github.workoutdiary.repository.WorkoutRepository
 import com.github.workoutdiary.databinding.FragmentHomeBinding
 
 import com.github.workoutdiary.R
-import com.github.workoutdiary.data.entities.WorkoutEntry
 import com.github.workoutdiary.data.entities.WorkoutExercise
 import kotlinx.coroutines.flow.combine
-import kotlin.math.exp
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {

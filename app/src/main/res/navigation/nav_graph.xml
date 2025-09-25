@@ -21,15 +21,34 @@
     <!-- Фрагмент создания тренировки (пока заглушка) -->
     <fragment
         android:id="@+id/createWorkoutFragment"
-        android:name="com.github.workoutdiary.ui.create.workout.CreateWorkoutFragment"
+        android:name="com.github.workoutdiary.ui.workout.CreateWorkoutFragment"
         android:label="Create Workout"
         tools:layout="@layout/fragment_add_workout">
+
+        <action
+            android:id="@+id/action_createWorkoutFragment_to_createExerciseFragment"
+            app:destination="@id/createExerciseFragment" />
 
         <!-- Действие для возврата назад -->
         <action
             android:id="@+id/action_createWorkoutFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Фрагмент создания упражнения (пока заглушка) -->
+    <fragment
+        android:id="@+id/createExerciseFragment"
+        android:name="com.github.workoutdiary.ui.exercise.CreateExerciseFragment"
+        android:label="Create Exercise"
+        tools:layout="@layout/fragment_add_exercise">
+
+        <!-- Действие для возврата назад -->
+        <action
+            android:id="@+id/action_createExerciseFragment_to_workoutFragment"
+            app:destination="@id/createWorkoutFragment"
+            app:popUpTo="@id/createWorkoutFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
