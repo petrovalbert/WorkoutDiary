@@ -1,5 +1,6 @@
 package com.github.workoutdiary.data.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +8,9 @@ import androidx.room.Index
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
 import com.github.workoutdiary.Constants
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName = Constants.TablenameSets.NAME,
     indices = [
@@ -32,4 +35,4 @@ data class WorkoutSet (
     val setNumber: Int,
     val weight: Double,
     val reps: Int
-)
+) : Parcelable
