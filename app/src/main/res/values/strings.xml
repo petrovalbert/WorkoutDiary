@@ -7,6 +7,7 @@
     <string name="notes_label">Place for notes</string>
     <string name="save_button">Save</string>
     <string name="cancel_button">Cancel</string>
+    <string name="delete">Delete</string>
 
     <!-- Strings for AddWorkoutActivity -->
     <string name="exercises_header">Exercises list</string>
@@ -20,6 +21,8 @@
     <string name="set_header">Set</string>
     <string name="weight_header">Weight</string>
     <string name="reps_header">Reps</string>
+    <string name="add_set">Add set</string>
+    <string name="menu_options">Menu options</string>
 
     <string name="please_fill_exercise">Please fill exercise name</string>
 
@@ -28,5 +31,7 @@
 
     <!-- Concent description -->
     <string name="roll_out">Roll out</string>
+
+
 
 </resources>

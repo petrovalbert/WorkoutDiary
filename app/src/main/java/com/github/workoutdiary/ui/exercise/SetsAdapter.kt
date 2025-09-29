@@ -11,10 +11,13 @@ import com.github.workoutdiary.Constants
 import com.github.workoutdiary.R
 import com.github.workoutdiary.data.entities.WorkoutSet
 import android.text.TextWatcher
+import android.widget.ImageButton
+import android.widget.PopupMenu
 
 class SetsAdapter(
-    private val sets: List<WorkoutSet>,
-    private val onSetChanged: (Int, String, String) -> Unit
+    private var sets: List<WorkoutSet>,
+    private val onSetChanged: (Int, String, String) -> Unit,
+    private val onSetDeleted: (Int) -> Unit
 ) : RecyclerView.Adapter<SetsAdapter.SetViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetViewHolder {
@@ -29,10 +32,17 @@ class SetsAdapter(
 
     override fun getItemCount(): Int = sets.size
 
+    fun updateSets(newSets: MutableList<WorkoutSet>) {
+        sets = newSets
+        notifyDataSetChanged()
+    }
+
     inner class SetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val setNumber: TextView = itemView.findViewById(R.id.set_number)
         private val weightEditText: EditText = itemView.findViewById(R.id.weight_edit_text)
         private val repsEditText: EditText = itemView.findViewById(R.id.reps_edit_text)
+
+        private val menuButton: ImageButton = itemView.findViewById(R.id.delete_sets_btn_menu)
 
         fun bind(set: WorkoutSet, position: Int) {
             setNumber.text = set.setNumber.toString()
@@ -40,21 +50,61 @@ class SetsAdapter(
             weightEditText.setText(if (set.weight > 0) set.weight.toString() else "")
             repsEditText.setText(if (set.reps > 0) set.reps.toString() else "")
 
-            weightEditText.addTextChangedListener(object : TextWatcher {
+            weightEditText.tag?.let {
+                if (it is TextWatcher) {
+                    weightEditText.removeTextChangedListener(it)
+                }
+            }
+
+            repsEditText.tag?.let {
+                if (it is TextWatcher) {
+                    repsEditText.removeTextChangedListener(it)
+                }
+            }
+
+            val weightWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     onSetChanged(position, Constants.SetFields.WEIGHT, s.toString())
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
+            }
 
-            repsEditText.addTextChangedListener(object : TextWatcher {
+            val repsWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     onSetChanged(position, Constants.SetFields.REPS, s.toString())
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
+            }
+
+            weightEditText.addTextChangedListener(weightWatcher)
+            repsEditText.addTextChangedListener(repsWatcher)
+
+            weightEditText.tag = weightWatcher
+            repsEditText.tag = repsWatcher
+
+            // Обработка клика на кнопку удаления
+            menuButton.setOnClickListener { view ->
+                showPopupMenu(view, position)
+            }
         }
+
+        private fun showPopupMenu(view: View, position: Int) {
+            val popup = PopupMenu(view.context, view)
+            popup.menuInflater.inflate(R.menu.set_menu, popup.menu)
+
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_delete -> {
+                        onSetDeleted(position)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
     }
 }

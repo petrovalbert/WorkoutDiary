@@ -99,6 +99,27 @@
             </LinearLayout>
         </ScrollView>
 
+        <!-- Кнопка добавления сета на всю ширину экрана -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="?android:attr/colorBackground"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <Button
+                android:id="@+id/addSetButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/add_set"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
         <!-- Кнопки зафиксированы внизу экрана -->
         <LinearLayout
             android:layout_width="match_parent"

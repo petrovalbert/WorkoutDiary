@@ -8,6 +8,7 @@
     <string name="notes_label">Место для заметок</string>
     <string name="save_button">Сохранить</string>
     <string name="cancel_button">Отмена</string>
+    <string name="delete">Удалить</string>
 
     <!-- Strings for AddWorkoutActivity -->
     <string name="exercises_header">Список упражнений</string>
@@ -21,6 +22,8 @@
     <string name="set_header">Подход</string>
     <string name="weight_header">Вес</string>
     <string name="reps_header">Повторений</string>
+    <string name="add_set">Добавить подход</string>
+    <string name="menu_options">Опции меню</string>
 
     <string name="please_fill_exercise">Пожалуйста, напишите название упражнения</string>
 

@@ -36,4 +36,13 @@
         android:inputType="number"
         android:layout_marginHorizontal="4dp" />
 
+    <ImageButton
+        android:id="@+id/delete_sets_btn_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/baseline_more_vert_24"
+        android:contentDescription="@string/menu_options"/>
+
 </LinearLayout>
