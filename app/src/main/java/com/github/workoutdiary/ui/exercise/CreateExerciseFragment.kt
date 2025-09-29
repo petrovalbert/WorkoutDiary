@@ -47,7 +47,7 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
 
             // Автоматическая прокрутка к последнему элементу
             binding.setsRecyclerView.post {
-                binding.setsRecyclerView.scrollToPosition(setsList.size - 1)
+                binding.setsRecyclerView.scrollToPosition(setsList.size - 1)ыы
             }
         }
 
