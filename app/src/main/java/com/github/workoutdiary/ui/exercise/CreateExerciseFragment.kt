@@ -30,29 +30,37 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
             findNavController().navigateUp()
         }
 
-
         setupRecyclerView()
         setupTextListeners()
 
     }
 
-
     private fun setupRecyclerView() {
         setsAdapter = SetsAdapter(setsList) { position, field, value ->
             when (field) {
-                Constants.SetFields.WEIGHT -> setsList[position].weight = value.toDoubleOrNull() ?: 0.0
-                Constants.SetFields.REPS -> setsList[position].reps = value.toIntOrNull() ?: 0
+                Constants.SetFields.WEIGHT -> {
+                    val updatedSet = setsList[position].copy(
+                        weight = value.toDoubleOrNull() ?: 0.0
+                    )
+                    setsList[position] = updatedSet
+                }
+                Constants.SetFields.REPS -> {
+                    val updatedSet = setsList[position].copy(
+                        reps = value.toIntOrNull() ?: 0
+                    )
+                    setsList[position] = updatedSet
+                }
             }
             saveData()
 
             // Автоматическая прокрутка к последнему элементу
             binding.setsRecyclerView.post {
-                binding.setsRecyclerView.scrollToPosition(setsList.size - 1)ыы
+                binding.setsRecyclerView.scrollToPosition(setsList.size - 1)
             }
         }
 
         binding.setsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@CreateExerciseFragment)
+            layoutManager = LinearLayoutManager(this@CreateExerciseFragment.context)
             adapter = setsAdapter
         }
 
@@ -71,7 +79,15 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
     }
 
     private fun addEmptySet() {
-        setsList.add(WorkoutSet(setsList.size + 1, 0.0, 0))
+        val nextSetNumber = setsList.size + 1
+        setsList.add(
+            WorkoutSet(
+                exerciseId = 0L,
+                setNumber = nextSetNumber,
+                weight = 0.0,
+                reps = 0
+            )
+        )
         setsAdapter.notifyItemInserted(setsList.size - 1)
     }
 
@@ -86,7 +102,6 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 exerciseName = s.toString()
-                saveData()
             }
         })
 
@@ -95,7 +110,6 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 muscleGroup = s.toString()
-                saveData()
             }
         })
     }
