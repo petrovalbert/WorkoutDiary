@@ -40,19 +40,21 @@ class CreateExerciseFragment : Fragment(R.layout.fragment_add_exercise) {
         setsAdapter = SetsAdapter(
             setsList,
             { position, field, value ->
-                when (field) {
-                    Constants.SetFields.WEIGHT -> {
-                        val updatedSet = setsList[position].copy(
-                            weight = value.toDoubleOrNull() ?: 0.0
-                        )
-                        setsList[position] = updatedSet
-                    }
+                if (position < setsList.size) {
+                    when (field) {
+                        Constants.SetFields.WEIGHT -> {
+                            val updatedSet = setsList[position].copy(
+                                weight = value.toDoubleOrNull() ?: 0.0
+                            )
+                            setsList[position] = updatedSet
+                        }
 
-                    Constants.SetFields.REPS -> {
-                        val updatedSet = setsList[position].copy(
-                            reps = value.toIntOrNull() ?: 0
-                        )
-                        setsList[position] = updatedSet
+                        Constants.SetFields.REPS -> {
+                            val updatedSet = setsList[position].copy(
+                                reps = value.toIntOrNull() ?: 0
+                            )
+                            setsList[position] = updatedSet
+                        }
                     }
                 }
             },

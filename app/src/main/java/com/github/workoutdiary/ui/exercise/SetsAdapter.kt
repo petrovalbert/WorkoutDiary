@@ -44,45 +44,46 @@ class SetsAdapter(
 
         private val menuButton: ImageButton = itemView.findViewById(R.id.delete_sets_btn_menu)
 
+        private var currentPosition = -1
+        private var weightWatcher: TextWatcher? = null
+        private var repsWatcher: TextWatcher? = null
+
         fun bind(set: WorkoutSet, position: Int) {
+            currentPosition = position
             setNumber.text = set.setNumber.toString()
+
+            weightWatcher?.let { weightEditText.removeTextChangedListener(it) }
+            repsWatcher?.let { repsEditText.removeTextChangedListener(it) }
+
+            weightWatcher = null
+            repsWatcher = null
 
             weightEditText.setText(if (set.weight > 0) set.weight.toString() else "")
             repsEditText.setText(if (set.reps > 0) set.reps.toString() else "")
 
-            weightEditText.tag?.let {
-                if (it is TextWatcher) {
-                    weightEditText.removeTextChangedListener(it)
-                }
-            }
 
-            repsEditText.tag?.let {
-                if (it is TextWatcher) {
-                    repsEditText.removeTextChangedListener(it)
-                }
-            }
-
-            val weightWatcher = object : TextWatcher {
+            weightWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
-                    onSetChanged(position, Constants.SetFields.WEIGHT, s.toString())
+                    if (currentPosition != -1 && currentPosition < sets.size) {
+                        onSetChanged(currentPosition, Constants.SetFields.WEIGHT, s.toString())
+                    }
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             }
 
-            val repsWatcher = object : TextWatcher {
+            repsWatcher = object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
-                    onSetChanged(position, Constants.SetFields.REPS, s.toString())
+                    if (currentPosition != -1 && currentPosition < sets.size) {
+                        onSetChanged(currentPosition, Constants.SetFields.REPS, s.toString())
+                    }
                 }
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             }
 
-            weightEditText.addTextChangedListener(weightWatcher)
-            repsEditText.addTextChangedListener(repsWatcher)
-
-            weightEditText.tag = weightWatcher
-            repsEditText.tag = repsWatcher
+            weightWatcher?.let { weightEditText.addTextChangedListener(it) }
+            repsWatcher?.let { repsEditText.addTextChangedListener(it) }
 
             // Обработка клика на кнопку удаления
             menuButton.setOnClickListener { view ->

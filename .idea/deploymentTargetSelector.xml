@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-09-24T13:08:08.416907Z">
+        <DropdownSelection timestamp="2025-09-30T06:21:06.685400500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Petrov\.android\avd\Xiaomi.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=I7TS6PUOAABMVGRO" />
             </handle>
           </Target>
         </DropdownSelection>
